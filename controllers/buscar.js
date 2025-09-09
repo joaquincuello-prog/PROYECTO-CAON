@@ -11,8 +11,7 @@ const coleccionesPermitidas = [
 ];
 
 const buscarUsuarios = async( termino = '', res = response ) => {
-
-    const esMongoID = ObjectId.isValid( termino ); // TRUE 
+    const esMongoID = ObjectId.isValid( termino );
 
     if ( esMongoID ) {
         const usuario = await Usuario.findById(termino);
@@ -30,12 +29,10 @@ const buscarUsuarios = async( termino = '', res = response ) => {
     res.json({
         results: usuarios
     });
-
 }
 
 const buscarCategorias = async( termino = '', res = response ) => {
-
-    const esMongoID = ObjectId.isValid( termino ); // TRUE 
+    const esMongoID = ObjectId.isValid( termino );
 
     if ( esMongoID ) {
         const categoria = await Categoria.findById(termino);
@@ -50,12 +47,10 @@ const buscarCategorias = async( termino = '', res = response ) => {
     res.json({
         results: categorias
     });
-
 }
 
 const buscarProductos = async( termino = '', res = response ) => {
-
-    const esMongoID = ObjectId.isValid( termino ); // TRUE 
+    const esMongoID = ObjectId.isValid( termino );
 
     if ( esMongoID ) {
         const producto = await Producto.findById(termino)
@@ -72,12 +67,9 @@ const buscarProductos = async( termino = '', res = response ) => {
     res.json({
         results: productos
     });
-
 }
 
-
 const buscar = ( req, res = response ) => {
-    
     const { coleccion, termino  } = req.params;
 
     if ( !coleccionesPermitidas.includes( coleccion ) ) {
@@ -88,24 +80,17 @@ const buscar = ( req, res = response ) => {
 
     switch (coleccion) {
         case 'usuarios':
-            buscarUsuarios(termino, res);
-        break;
+            return buscarUsuarios(termino, res);
         case 'categorias':
-            buscarCategorias(termino, res);
-        break;
+            return buscarCategorias(termino, res);
         case 'productos':
-            buscarProductos(termino, res);
-        break;
-
+            return buscarProductos(termino, res);
         default:
-            res.status(500).json({
-                msg: 'Se le olvido hacer esta búsquda'
+            return res.status(500).json({
+                msg: 'Colección no implementada en búsqueda'
             })
     }
-
 }
-
-
 
 module.exports = {
     buscar

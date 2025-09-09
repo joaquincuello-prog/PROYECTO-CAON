@@ -28,6 +28,13 @@ const login = async(req, res = response) => {
             });
         }
 
+        // Si el usuario se registró vía Google no comparar password normal
+        if ( usuario.google ) {
+            return res.status(400).json({
+                msg: 'Este usuario se registró con Google. Ingrese con Google Sign-In'
+            });
+        }
+
         // Verificar la contraseña
         const validPassword = bcryptjs.compareSync( password, usuario.password );
         if ( !validPassword ) {
@@ -99,14 +106,10 @@ const googleSignin = async(req, res = response) => {
         })
 
     }
-
-
-
 }
-
-
 
 module.exports = {
     login,
     googleSignin
 }
+
